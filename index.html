@@ -2,52 +2,104 @@
 <html>
 
 <head>
-
 <title>LeaderBoard</title>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+</script>
 <script type="text/javascript">
 
-	if(typeof jQuery == 'undefined'){
-        document.write('<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.min.js"></'+'script>');
-  }
-
-
-	function updateScore(name){
-		if (window.XMLHttpRequest)
-  	{// code for IE7+, Firefox, Chrome, Opera, Safari
-  		xmlhttp=new XMLHttpRequest();
-  	}
-		else
-  	{// code for IE6, IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  	}
-		xmlhttp.onreadystatechange=function()
-  	{
-  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    	{
-    		$(".leaderboard").html(xmlhttp.responseText);
+	function updateScore(name, flag){	// ajax update
+		$.ajax({
+			url: "leaderboard.php",
+			data: {name: name, flag: flag},
+			datatype: 'html',
+			type: 'GET',
+			cache: false,
+			success: function (data){
+    		$("#leaderboard").html(data);
     		setPlayerclick();
-    	}
-  	}
-		xmlhttp.open("GET","leaderboard.php?q="+name,true);
-		xmlhttp.send();
-	}
-	
-	
-	function setPlayerclick(){
-		$(".player").click(function(){
-			$(".player selected").removeClass("selected");
-			$(this).addClass("selected");
-			$("#playerdetail").text( $(this).find(".name").text );
+    		$(".player:contains("+$("#playerdetail").html()+")").addClass("selected");
+			}
 		});
 	}
 	
-	$(document).ready(
-		setPlayerclick()
-	);
+	
+	function setPlayerclick(){ // add click event to player
+		$(".player").click(function(){
+			$(".player.selected").removeClass("selected");
+			$(this).addClass("selected");
+			$("#btn").show();
+			$("#playerdetail").text( $(this).find(".name").text() );
+		});
+	}
+	
+	$(document).ready(function(){
+		
+		//init
+		setPlayerclick();
+		$("#playerdetail").text("Click a player to select");
+		$("#btn").hide();
+		updateScore("",0);
+		
+		
+		// button click event
+		$("#btn").click(function(){ 
+			updateScore($(".player.selected > .name").text(),1);
+		});
+		
+		// auto update
+		setInterval(function(){updateScore($(".player.selected > .name").text(),0)}, 1500);
+	});
 	
 </script>
+<style>
 
+#content {
+	width: 50%;
+	min-width: 250px;
+	margin: auto;
+	padding: 50px 0;
+}
+
+.player {
+	display: block;
+}
+.player.selected {
+	background-color: yellow;
+}
+
+
+.player.selected .score{
+	color: black;
+}
+
+.player .name {
+	width: 60%;
+	min-width: 300px;
+	font-size: 34px;
+	font-weight: 300;
+}
+
+.player .score {
+	width: 38%;
+	min-width: 180px;
+	display: inline-block;
+	float: right;
+	font-size: 30px;
+	text-align: center;
+	color: #777;
+}
+
+#detail {
+	width: 90%;
+	min-width: 300px;
+	font-weight: 700;
+	font-size: 36px;
+	margin: 70px auto 10px;
+	border-top-width; 4px;
+	border-top-style: dashed;
+	border-top-color: #ccc;
+}
+</style>
 
 </head>
 
@@ -59,11 +111,13 @@
 	<div id="leaderboard">
 	
 	</div>
+	<div id="detail">
+	
 	<div id="playerdetail">
 		
 	</div>
-	<input type="button" value="Give 5 points" />
-
+	<input id="btn" type="button" value="Give 5 points" />
+	</div>
 </div>
 </body>
 

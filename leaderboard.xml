@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Leaderboard>
+	<Record>
+		<Name>Nikola Tesla</Name>
+		<Score>2.2999999999999992e+32</Score>
+	</Record>
+	<Record>
+		<Name>Marie Curie</Name>
+		<Score>6480</Score>
+	</Record>
+	<Record>
+		<Name>Claude Shgannon</Name>
+		<Score>6350</Score>
+	</Record>
+	<Record>
+		<Name>Carl Friedrich Gauss</Name>
+		<Score>6335</Score>
+	</Record>
+	<Record>
+		<Name>Grace Hopper</Name>
+		<Score>62952</Score>
+	</Record>
+	<Record>
+		<Name>Ada Lovelace</Name>
+		<Score>6280</Score>
+	</Record>
+</Leaderboard>

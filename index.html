@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>LeaderBoard</title>
+
+<script type="text/javascript">
+
+	if(typeof jQuery == 'undefined'){
+        document.write('<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.min.js"></'+'script>');
+  }
+
+
+	function updateScore(name){
+		if (window.XMLHttpRequest)
+  	{// code for IE7+, Firefox, Chrome, Opera, Safari
+  		xmlhttp=new XMLHttpRequest();
+  	}
+		else
+  	{// code for IE6, IE5
+  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  	}
+		xmlhttp.onreadystatechange=function()
+  	{
+  		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    	{
+    		$(".leaderboard").html(xmlhttp.responseText);
+    		setPlayerclick();
+    	}
+  	}
+		xmlhttp.open("GET","leaderboard.php?q="+name,true);
+		xmlhttp.send();
+	}
+	
+	
+	function setPlayerclick(){
+		$(".player").click(function(){
+			$(".player selected").removeClass("selected");
+			$(this).addClass("selected");
+			$("#playerdetail").text( $(this).find(".name").text );
+		});
+	}
+	
+	$(document).ready(
+		setPlayerclick()
+	);
+	
+</script>
+
+
+</head>
+
+
+
+<body>
+<div id="content">
+
+	<div id="leaderboard">
+	
+	</div>
+	<div id="playerdetail">
+		
+	</div>
+	<input type="button" value="Give 5 points" />
+
+</div>
+</body>
+
+</html>
